@@ -1,0 +1,82 @@
+/**
+ * Represents an AIHubChatLoader.
+ * @class AIHubChatLoader
+ * @constructor
+ * @param {Object} options - The options object.
+ * @param {string} options.apiKey - The API key.
+ * @param {string} options.agentCode - The agent code.
+ * @param {string} [options.baseURL] - The base URL.
+ * @param {string} [options.elementId] - The element ID.
+ * @param {string} [options.version] - Version of the Chat Component to load.
+ */
+class AIHubChatLoader {
+  constructor(options) {
+    const { apiKey, agentCode, baseURL, elementId, version } = options;
+    this.apiKey = apiKey;
+    this.agentCode = agentCode;
+    this.baseURL = baseURL || "https://api.serenitystar.ai/api";
+    this.elementId = elementId || "aihub-chat";
+    this.baseURL = "https://hub.serenitystar.ai";
+  }
+
+  async init() {
+    await this.loadCSS();
+    await this.loadScript();
+    this.initChatComponent();
+  }
+
+  async loadCSS() {
+    const linkElement = document.createElement("link");
+    linkElement.rel = "stylesheet";
+    const isValidVersion = this.checkIfVersionIsValid();
+    linkElement.href = isValidVersion
+      ? `${this.baseURL}/resources/${this.version}/chat.css`
+      : `${this.baseURL}/resources/chat.css`;
+    document.head.appendChild(linkElement);
+  }
+
+  async loadScript() {
+    return new Promise((resolve, reject) => {
+      const scriptElement = document.createElement("script");
+      const isValidVersion = this.checkIfVersionIsValid();
+
+      scriptElement.src = isValidVersion
+        ? `${this.baseURL}/resources/${this.version}/chat.js`
+        : `${this.baseURL}/resources/chat.js`;
+      scriptElement.onload = resolve;
+      scriptElement.onerror = reject;
+      document.body.appendChild(scriptElement);
+    });
+  }
+
+  initChatComponent() {
+    const chatContainerId = this.elementId;
+    if (!document.getElementById(chatContainerId)) {
+      const chatDiv = document.createElement("div");
+      chatDiv.id = chatContainerId;
+      document.body.appendChild(chatDiv);
+    }
+
+    const chat = new AIHubChat(chatContainerId, {
+      apiKey: this.apiKey,
+      agentCode: this.agentCode,
+      baseURL: this.baseURL,
+    });
+    chat.init();
+  }
+
+  checkIfVersionIsValid() {
+    if (!this.version) {
+      return false;
+    }
+
+    const versionPattern = /^\d{1,3}\.\d{1,3}\.\d{1,3}$/;
+
+    return versionPattern.test(this.version);
+  }
+}
+
+function loadSerenityChat(options) {
+  const chatLoader = new AIHubChatLoader(options);
+  chatLoader.init();
+}
