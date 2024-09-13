@@ -10,12 +10,11 @@
  * @param {string} [options.version] - Version of the Chat Component to load.
  */
 class AIHubChatLoader {
-  constructor(options) {
-    const { apiKey, agentCode, baseURL, elementId, version } = options;
+  constructor(apiKey, agentCode) {
     this.apiKey = apiKey;
     this.agentCode = agentCode;
-    this.baseURL = baseURL || "https://api.serenitystar.ai/api";
-    this.elementId = elementId || "aihub-chat";
+    this.baseURL = "https://api.serenitystar.ai/api";
+    this.elementId = "aihub-chat";
     this.staticResourcesBaseURL = "https://hub.serenitystar.ai";
   }
 
@@ -77,7 +76,7 @@ class AIHubChatLoader {
   }
 }
 
-function loadSerenityChat(options) {
-  const chatLoader = new AIHubChatLoader(options);
+function loadSerenityChat(apiKey, agentCode) {
+  const chatLoader = new AIHubChatLoader(apiKey, agentCode);
   chatLoader.init();
 }
