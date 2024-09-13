@@ -16,7 +16,7 @@ class AIHubChatLoader {
     this.agentCode = agentCode;
     this.baseURL = baseURL || "https://api.serenitystar.ai/api";
     this.elementId = elementId || "aihub-chat";
-    this.baseURL = "https://hub.serenitystar.ai";
+    this.staticResourcesBaseURL = "https://hub.serenitystar.ai";
   }
 
   async init() {
@@ -30,19 +30,20 @@ class AIHubChatLoader {
     linkElement.rel = "stylesheet";
     const isValidVersion = this.checkIfVersionIsValid();
     linkElement.href = isValidVersion
-      ? `${this.baseURL}/resources/${this.version}/chat.css`
-      : `${this.baseURL}/resources/chat.css`;
+      ? `${this.staticResourcesBaseURL}/resources/${this.version}/chat.css`
+      : `${this.staticResourcesBaseURL}/resources/chat.css`;
     document.head.appendChild(linkElement);
   }
 
   async loadScript() {
+    const _self = this;
     return new Promise((resolve, reject) => {
       const scriptElement = document.createElement("script");
-      const isValidVersion = this.checkIfVersionIsValid();
+      const isValidVersion = _self.checkIfVersionIsValid();
 
       scriptElement.src = isValidVersion
-        ? `${this.baseURL}/resources/${this.version}/chat.js`
-        : `${this.baseURL}/resources/chat.js`;
+        ? `${_self.staticResourcesBaseURL}/resources/${_self.version}/chat.js`
+        : `${_self.staticResourcesBaseURL}/resources/chat.js`;
       scriptElement.onload = resolve;
       scriptElement.onerror = reject;
       document.body.appendChild(scriptElement);
@@ -76,8 +77,7 @@ class AIHubChatLoader {
   }
 }
 
-function loadSerenityChat(apiKey, agentCode) {
-  const options = { apiKey, agentCode }
+function loadSerenityChat(options) {
   const chatLoader = new AIHubChatLoader(options);
   chatLoader.init();
 }
