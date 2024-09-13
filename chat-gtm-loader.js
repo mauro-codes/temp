@@ -76,7 +76,8 @@ class AIHubChatLoader {
   }
 }
 
-function loadSerenityChat(options) {
+function loadSerenityChat(apiKey, agentCode) {
+  const options = { apiKey, agentCode }
   const chatLoader = new AIHubChatLoader(options);
   chatLoader.init();
 }
