@@ -1,13 +1,6 @@
 /**
  * Represents an AIHubChatLoader.
  * @class AIHubChatLoader
- * @constructor
- * @param {Object} options - The options object.
- * @param {string} options.apiKey - The API key.
- * @param {string} options.agentCode - The agent code.
- * @param {string} [options.baseURL] - The base URL.
- * @param {string} [options.elementId] - The element ID.
- * @param {string} [options.version] - Version of the Chat Component to load.
  */
 class AIHubChatLoader {
   constructor(apiKey, agentCode) {
@@ -80,3 +73,5 @@ function loadSerenityChat(apiKey, agentCode) {
   const chatLoader = new AIHubChatLoader(apiKey, agentCode);
   chatLoader.init();
 }
+
+window.loadSerenityChat = loadSerenityChat;
